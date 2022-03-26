@@ -76,6 +76,10 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
             findPreference("customize_accessKey")?.onPreferenceClickListener = this
             findPreference("share_log")?.onPreferenceClickListener = this
             findPreference("customize_drawer")?.onPreferenceClickListener = this
+            findPreference("custom_link")?.onPreferenceClickListener = this
+            findPreference("add_custom_button")?.onPreferenceClickListener = this
+            findPreference("skin")?.onPreferenceClickListener = this
+            findPreference("skin_import")?.onPreferenceClickListener = this
             checkCompatibleVersion()
             checkUpdate()
         }
@@ -289,6 +293,20 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
                         Log.toast("${e.message}")
                     }
                 }
+                SKIN_IMPORT -> {
+                    val file = File(currentContext.filesDir, "skin.json")
+                    val uri = data?.data
+                    if (resultCode == RESULT_CANCELED || uri == null) return
+                    try {
+                        file.outputStream().use { out ->
+                            activity.contentResolver.openInputStream(uri)?.copyTo(out)
+                        }
+                    } catch (e: Exception) {
+                        Log.e(e)
+                        Log.toast(e.message ?: "未知错误", true)
+                    }
+                    Log.toast("保存成功 重启两次后生效", true)
+                }
             }
 
             super.onActivityResult(requestCode, resultCode, data)
@@ -416,6 +434,19 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
             return true
         }
 
+        private fun onSkinImportClick(isChecked: Boolean): Boolean {
+            if (!isChecked) return true
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "application/*"
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            try {
+                startActivityForResult(Intent.createChooser(intent, "选择文件"), SKIN_IMPORT)
+            } catch (ex: ActivityNotFoundException) {
+                Log.toast("请安装文件管理器")
+            }
+            return true
+        }
+
         private fun onExportVideoClick(): Boolean {
             VideoExportDialog(activity, this).show()
             return true
@@ -458,7 +489,7 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
 
         private fun onShareLogClick(): Boolean {
             if ((logFile.exists().not() && oldLogFile.exists().not()) || prefs.getBoolean("save_log", false).not()) {
-                Log.toast("没有保存过日志")
+                Log.toast("没有保存过日志", force = true)
                 return true
             }
             AlertDialog.Builder(activity)
@@ -478,7 +509,7 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
                             setDataAndType(uri, "text/log")
                         }, moduleRes.getString(R.string.share_log_title)))
                     } else {
-                        Log.toast("日志文件不存在")
+                        Log.toast("日志文件不存在", force = true)
                     }
                 }
                 .show()
@@ -520,6 +551,84 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
             return true
         }
 
+        private fun onCustomLinkClick(): Boolean {
+            val tv = EditText(activity)
+            tv.setText(sPrefs.getString("custom_link", ""))
+            tv.hint = "bilibili://user_center/vip"
+            AlertDialog.Builder(activity).run {
+                setTitle(R.string.custom_link_summary)
+                setView(tv)
+                setPositiveButton(android.R.string.ok) { _, _ ->
+                    if (tv.text.toString().startsWith("bilibili://")) {
+                        sPrefs.edit().putString("custom_link", tv.text.toString()).apply()
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(sPrefs.getString("custom_link", ""))
+                        )
+                        startActivity(intent)
+                    } else {
+                        Log.toast("格式不正确", force = true)
+                    }
+                }
+                setNeutralButton("清空") { _, _ ->
+                    sPrefs.edit().remove("custom_link").apply()
+                }
+                setNegativeButton(android.R.string.cancel, null)
+                show()
+            }
+            return true
+        }
+
+        private fun onSkinClick(isChecked: Boolean): Boolean {
+            if (!isChecked) return true
+            val tv = EditText(activity)
+            tv.setText(sPrefs.getString("skin_json", "").toString())
+            AlertDialog.Builder(activity).run {
+                setTitle(R.string.skin_title)
+                setView(tv)
+                setPositiveButton(android.R.string.ok) { _, _ ->
+                    sPrefs.edit()
+                        .putString("skin_json", tv.text.toString())
+                        .apply()
+                    Log.toast("保存成功 重启两次后生效")
+                }
+                setNegativeButton(android.R.string.cancel, null)
+                setCancelable(false)
+                show()
+            }
+            return true
+        }
+
+        private fun onAddCustomButtonClick(isChecked: Boolean): Boolean {
+            if (!isChecked) return true
+            AlertDialog.Builder(activity).run {
+                val layout = moduleRes.getLayout(R.layout.custom_button)
+                val inflater = LayoutInflater.from(context)
+                val view = inflater.inflate(layout, null)
+                val editTexts = arrayOf(
+                    view.findViewById<EditText>(R.id.custom_button_id),
+                    view.findViewById(R.id.custom_button_title),
+                    view.findViewById(R.id.custom_button_uri),
+                    view.findViewById(R.id.custom_button_icon)
+                )
+                editTexts.forEach {
+                    it.setText(prefs.getString("${it.tag}", ""))
+                }
+                setTitle(R.string.add_custom_button_title)
+                setView(view)
+                setPositiveButton(android.R.string.ok) { _, _ ->
+                    editTexts.forEach {
+                        val key = "${it.tag}"
+                        val value = it.text.toString()
+                        if (value.isNotEmpty()) prefs.edit().putString(key, value).apply()
+                        else prefs.edit().remove(key).apply()
+                    }
+                }
+                show()
+            }
+            return true
+        }
+
         override fun onPreferenceClick(preference: Preference) = when (preference.key) {
             "version" -> onVersionClick()
             "update" -> onUpdateClick()
@@ -533,6 +642,10 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
             "home_filter" -> onHomeFilterClick()
             "share_log" -> onShareLogClick()
             "customize_drawer" -> onCustomizeDrawerClick()
+            "custom_link" -> onCustomLinkClick()
+            "add_custom_button" -> onAddCustomButtonClick((preference as SwitchPreference).isChecked)
+            "skin" -> onSkinClick((preference as SwitchPreference).isChecked)
+            "skin_import" -> onSkinImportClick((preference as SwitchPreference).isChecked)
             else -> false
         }
     }
@@ -594,6 +707,7 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
         const val PREF_IMPORT = 2
         const val PREF_EXPORT = 3
         const val VIDEO_EXPORT = 4
+        const val SKIN_IMPORT = 5
     }
 
 }
