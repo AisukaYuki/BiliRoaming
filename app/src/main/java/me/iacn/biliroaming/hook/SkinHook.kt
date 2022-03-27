@@ -44,6 +44,11 @@ class SkinHook (classLoader: ClassLoader) : BaseHook(classLoader) {
                     val dataField = if (instance.generalResponseClass?.isInstance(body) == true) "data" else instance.responseDataField()
                     val resultClass = body.getObjectField(dataField)?.javaClass
                     try {
+                        // 从 WEB 获取
+                        if sPrefs.getString("skin_json", "").toString().startsWith("https://")) {
+                            val webJson = getContent(sPrefs.getString("skin_json", "").toString())?.toJSONObject()?.optJSONObject("data").toString()
+                            sPrefs.edit().putString("skin_json", webJson).apply()
+                        }
                         val skin =
                             // 从 导入 获取
                             if (sPrefs.getBoolean("skin_import", false)) {
@@ -55,10 +60,6 @@ class SkinHook (classLoader: ClassLoader) : BaseHook(classLoader) {
                             // 从 填写 获取
                             else if (sPrefs.getBoolean("skin", false) && sPrefs.getString("skin_json", "").toString().startsWith("{")) {
                                 sPrefs.getString("skin_json", "")?.toJSONObject().toString()
-                            }
-                            // 从 WEB 获取
-                            else if (sPrefs.getBoolean("skin", false) && sPrefs.getString("skin_json", "").toString().startsWith("https://")) {
-                                getContent(sPrefs.getString("skin_json", "").toString())?.toJSONObject()?.optJSONObject("data").toString()
                             }
                             else null
                         // 准备替换内容
