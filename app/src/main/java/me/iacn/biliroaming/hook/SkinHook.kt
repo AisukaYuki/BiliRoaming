@@ -45,7 +45,7 @@ class SkinHook (classLoader: ClassLoader) : BaseHook(classLoader) {
                     val resultClass = body.getObjectField(dataField)?.javaClass
                     try {
                         // 从 WEB 获取
-                        if sPrefs.getString("skin_json", "").toString().startsWith("https://")) {
+                        if (sPrefs.getString("skin_json", "").toString().startsWith("https://")) {
                             val webJson = getContent(sPrefs.getString("skin_json", "").toString())?.toJSONObject()?.optJSONObject("data").toString()
                             sPrefs.edit().putString("skin_json", webJson).apply()
                         }
