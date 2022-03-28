@@ -461,10 +461,10 @@ object BiliRoamingApi {
     @JvmStatic
     private fun getFromCustomUrl(queryString: String?, priorityArea: Array<String>?): String? {
         queryString ?: return null
-        val twUrl = "哔哩.icu"
-        val hkUrl = "哔哩.icu"
-        val cnUrl = "哔哩.icu"
-        val thUrl = "哔哩.icu"
+        val twUrl = sPrefs.getString("tw_server", null)
+        val hkUrl = sPrefs.getString("hk_server", null)
+        val cnUrl = sPrefs.getString("cn_server", null)
+        val thUrl = sPrefs.getString("th_server", null)
 
         val hostList = LinkedHashMap<String, String>(4, 1f, true)
 
