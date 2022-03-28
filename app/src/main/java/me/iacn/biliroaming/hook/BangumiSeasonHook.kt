@@ -165,6 +165,7 @@ class BangumiSeasonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
     }
 
     override fun startHook() {
+        val main_func = false
         if (!sPrefs.getBoolean("main_func", false)) return
         Log.d("startHook: BangumiSeason")
         instance.seasonParamsMapClass?.hookAfterAllConstructors { param ->
