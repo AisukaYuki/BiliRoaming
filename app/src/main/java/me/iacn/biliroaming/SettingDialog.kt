@@ -139,7 +139,6 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
             val supportStoryVideo = instance.storyVideoActivityClass != null
             val supportPurifyShare = instance.shareClickResultClass != null
             val supportDownloadThread = versionCode < 6630000
-            val supportCustomizeTheme = versionCode < 6630000
             if (!supportDrawer)
                 disablePreference("drawer")
             if (!supportSplashHook) {
@@ -180,9 +179,6 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
             }
             if (!supportDownloadThread) {
                 disablePreference("custom_download_thread")
-            }
-            if (!supportCustomizeTheme) {
-                disablePreference("custom_theme")
             }
         }
 
@@ -564,7 +560,7 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
             tv.setText(sPrefs.getString("custom_link", ""))
             tv.hint = "bilibili://user_center/vip"
             AlertDialog.Builder(activity).run {
-                setTitle(R.string.custom_link_summary)
+                setTitle(moduleRes.getString(R.string.custom_link_summary))
                 setView(tv)
                 setPositiveButton(android.R.string.ok) { _, _ ->
                     if (tv.text.toString().startsWith("bilibili://")) {
