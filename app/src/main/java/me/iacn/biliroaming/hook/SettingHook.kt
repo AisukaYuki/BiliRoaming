@@ -60,7 +60,7 @@ class SettingHook(classLoader: ClassLoader) : BaseHook(classLoader) {
 
             val item = instance.menuGroupItemClass?.new() ?: return@hookBeforeAllMethods
             item.setIntField("id", SETTING_ID)
-                .setObjectField("title", "哔哩漫游设置")
+                .setObjectField("title", "AC漫游设置")
                 .setObjectField(
                     "icon",
                     "https://i0.hdslb.com/bfs/album/276769577d2a5db1d9f914364abad7c5253086f6.png"
