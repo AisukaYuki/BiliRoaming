@@ -23,14 +23,14 @@ object Log {
                 callStaticMethod(
                     BiliBiliPackage.instance.showToast(),
                     currentContext,
-                    "哔哩漫游：$msg",
+                    "AC漫游：$msg",
                     duration
                 )
                 Unit
             } ?: run {
                 toast?.cancel()
                 toast = Toast.makeText(currentContext, "", duration).apply {
-                    setText("哔哩漫游：$msg")
+                    setText("AC漫游：$msg")
                     show()
                 }
             }
