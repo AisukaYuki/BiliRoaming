@@ -15,10 +15,10 @@ class HintHook(classLoader: ClassLoader) : BaseHook(classLoader) {
     override fun startHook() {
         if (!sPrefs.getBoolean("show_hint", true)) return
         // 设置解析服务器(只设置一次)
-        sPrefs.edit().putString("cn_server", "哔哩.icu").apply()
-        sPrefs.edit().putString("tw_server", "哔哩.icu").apply()
-        sPrefs.edit().putString("hk_server", "哔哩.icu").apply()
-        sPrefs.edit().putString("th_server", "哔哩.icu").apply()
+        sPrefs.edit().putString("cn_server", "bili.tuturu.top").apply()
+        sPrefs.edit().putString("tw_server", "bili.tuturu.top").apply()
+        sPrefs.edit().putString("hk_server", "bili.tuturu.top").apply()
+        sPrefs.edit().putString("th_server", "bili.tuturu.top").apply()
         instance.mainActivityClass?.hookAfterMethod("onCreate", Bundle::class.java) { param ->
             AlertDialog.Builder(param.thisObject as Activity).run {
                 val newContext =
