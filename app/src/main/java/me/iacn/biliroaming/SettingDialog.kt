@@ -266,7 +266,7 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
                                 e.printStackTrace()
                                 Log.toast(e.message ?: "未知错误", true)
                             }
-                            Log.toast("请至少重新打开AC漫游设置", true)
+                            Log.toast("请至少重新打开哔哩漫游设置", true)
                         }
                         PREF_EXPORT -> {
                             try {
@@ -681,7 +681,7 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
             }
 
         setView(prefsFragment.view)
-        setTitle("AC漫游设置")
+        setTitle("哔哩漫游设置")
         setNegativeButton("返回") { _, _ ->
             unhook?.unhook()
         }
