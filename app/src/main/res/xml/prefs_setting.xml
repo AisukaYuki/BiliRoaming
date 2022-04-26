@@ -255,6 +255,7 @@
             android:summary="@string/add_korea_summary"
             android:title="@string/add_korea_title" />
         <SwitchPreference
+            android:defaultValue="true"
             android:dependency="hidden"
             android:key="search_area_bangumi"
             android:summary="@string/search_area_summary"
