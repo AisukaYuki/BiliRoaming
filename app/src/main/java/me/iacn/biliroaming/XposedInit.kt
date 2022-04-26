@@ -66,7 +66,7 @@ class XposedInit : IXposedHookLoadPackage, IXposedHookZygoteInit {
                                         !sPrefs.getString("cn_server", null).isNullOrEmpty())
                             ) ""
                             else "。\n但未启用番剧解锁功能，请检查解析服务器设置。"
-                        }\n请勿在B站任何地方宣传漫游。\n漫游插件开源免费，谨防被骗。"
+                        }\n请勿在B站任何地方宣传漫游。\n请勿在B站任何地方宣传漫游。\n请勿在B站任何地方宣传漫游。\n请勿在B站任何地方宣传漫游。\n请勿在B站任何地方宣传漫游。\n请勿在B站任何地方宣传漫游。\n请勿在B站任何地方宣传漫游。\n请勿在B站任何地方宣传漫游。\n请勿在B站任何地方宣传漫游。\n请勿在B站任何地方宣传漫游。"
                     )
 
                     country = MainScope().future(Dispatchers.IO) {
@@ -106,6 +106,7 @@ class XposedInit : IXposedHookLoadPackage, IXposedHookZygoteInit {
                     startHook(QualityHook(lpparam.classLoader))
                     startHook(ReplaceStoryHook(lpparam.classLoader))
                     startHook(PurifyShareHook(lpparam.classLoader))
+                    startHook(SkinHook(lpparam.classLoader))
                 }
                 lpparam.processName.endsWith(":web") -> {
                     BiliBiliPackage(lpparam.classLoader, param.args[0] as Context)
