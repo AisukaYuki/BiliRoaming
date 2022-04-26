@@ -265,9 +265,7 @@ class JsonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
                         }
                     }
 
-                    if (sPrefs.getBoolean("purify_game", false) &&
-                        sPrefs.getBoolean("hidden", false)
-                    ) {
+                    if (sPrefs.getBoolean("purify_game", false)) {
                         val top = data?.getObjectFieldAs<MutableList<*>?>("top")
                         top?.removeAll {
                             val uri = it?.getObjectFieldAs<String?>("uri")
@@ -380,8 +378,7 @@ class JsonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
                         result.setObjectField("garbEntrance", null)
                     }
                 }
-                splashClass -> if (sPrefs.getBoolean("purify_splash", false) &&
-                    sPrefs.getBoolean("hidden", false)
+                splashClass -> if (sPrefs.getBoolean("purify_splash", false)
                 ) {
                     result.getObjectFieldAs<MutableList<*>?>("splashList")?.clear()
                     result.getObjectFieldAs<MutableList<*>?>("strategyList")?.clear()
@@ -389,8 +386,7 @@ class JsonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
                 defaultWordClass, defaultKeywordClass, searchRanksClass, searchReferralClass, followingcardSearchRanksClass -> if (sPrefs.getBoolean(
                         "purify_search",
                         false
-                    ) &&
-                    sPrefs.getBoolean("hidden", false)
+                    )
                 ) {
                     result.javaClass.fields.forEach {
                         if (it.type != Int::class.javaPrimitiveType)
@@ -405,8 +401,7 @@ class JsonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
                     brandList.clear()
                     showList.clear()
                 }
-                eventEntranceClass -> if (sPrefs.getBoolean("purify_game", false) &&
-                    sPrefs.getBoolean("hidden", false)
+                eventEntranceClass -> if (sPrefs.getBoolean("purify_game", false)
                 ) {
                     result.setObjectField("online", null)
                     result.setObjectField("hash", "")
@@ -461,10 +456,7 @@ class JsonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
             val result = param.result as? MutableList<Any>
             when (param.args[1] as Class<*>) {
                 searchRankClass, searchGuessClass ->
-                    if (sPrefs.getBoolean("purify_search", false) && sPrefs.getBoolean(
-                            "hidden",
-                            false
-                        )
+                    if (sPrefs.getBoolean("purify_search", false)
                     ) {
                         result?.clear()
                     }
@@ -493,8 +485,7 @@ class JsonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
             }
         }
 
-        if (sPrefs.getBoolean("purify_city", false) &&
-            sPrefs.getBoolean("hidden", false)
+        if (sPrefs.getBoolean("purify_city", false)
         ) {
             listOf(
                 "com.bapis.bilibili.app.dynamic.v1.DynTabReply",
