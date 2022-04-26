@@ -166,7 +166,7 @@
         android:title="@string/hidden_group">
 
         <SwitchPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="hidden"
             android:summary="@string/hidden_summary"
             android:title="@string/hidden_title" />
@@ -239,6 +239,7 @@
             android:summary="@string/purify_city_summary"
             android:title="@string/purify_city_title" />
         <SwitchPreference
+            android:defaultValue="true" 
             android:dependency="hidden"
             android:key="add_bangumi"
             android:summary="@string/add_bangumi_summary"
