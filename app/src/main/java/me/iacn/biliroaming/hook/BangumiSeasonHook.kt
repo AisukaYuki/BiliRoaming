@@ -340,8 +340,7 @@ class BangumiSeasonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
                 hookAfterMethod("getCommentJumpUrl", hooker = urlHook)
             }
 
-        if (sPrefs.getBoolean("hidden", false) &&
-            (sPrefs.getBoolean(
+        if ((sPrefs.getBoolean(
                 "search_area_bangumi",
                 false
             ) || sPrefs.getBoolean("search_area_movie", false))
@@ -414,7 +413,7 @@ class BangumiSeasonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
 
     private fun retrieveAreaSearchV2(data: Any?, url: String, area: String, type: String): Any? {
         data ?: return data
-        if (sPrefs.getBoolean("hidden", false) && (sPrefs.getBoolean(
+        if ((sPrefs.getBoolean(
                 "search_area_bangumi", false
             ) || sPrefs.getBoolean("search_area_movie", false))
         ) {
@@ -450,8 +449,7 @@ class BangumiSeasonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
 
     private fun retrieveAreaSearch(data: Any?, url: String, area: String, type: String): Any? {
         data ?: return data
-        if (sPrefs.getBoolean("hidden", false) &&
-            (sPrefs.getBoolean(
+        if ((sPrefs.getBoolean(
                 "search_area_bangumi",
                 false
             ) || sPrefs.getBoolean("search_area_movie", false))
@@ -486,8 +484,7 @@ class BangumiSeasonHook(classLoader: ClassLoader) : BaseHook(classLoader) {
 
     private fun addAreaTags(body: Any?) {
         body ?: return
-        if (sPrefs.getBoolean("hidden", false) &&
-            (sPrefs.getBoolean(
+        if ((sPrefs.getBoolean(
                 "search_area_bangumi",
                 false
             ) || sPrefs.getBoolean("search_area_movie", false))
