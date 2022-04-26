@@ -166,7 +166,7 @@
         android:title="@string/hidden_group">
 
         <SwitchPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="hidden"
             android:summary="@string/hidden_summary"
             android:title="@string/hidden_title" />
