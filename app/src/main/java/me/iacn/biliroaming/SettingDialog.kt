@@ -670,7 +670,6 @@ class SettingDialog(context: Context) : AlertDialog.Builder(context) {
             "add_custom_button" -> onAddCustomButtonClick((preference as SwitchPreference).isChecked)
             "skin" -> onSkinClick((preference as SwitchPreference).isChecked)
             "skin_import" -> onSkinImportClick((preference as SwitchPreference).isChecked)
-            "add_custom_button" -> onAddCustomButtonClick()
             "customize_dynamic" -> onCustomDynamicClick()
             else -> false
         }
