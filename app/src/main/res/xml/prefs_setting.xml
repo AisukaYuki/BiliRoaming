@@ -251,12 +251,13 @@
             android:summary="@string/add_bangumi_summary"
             android:title="@string/add_bangumi_title" />
         <SwitchPreference
+            android:defaultValue="true" 
             android:dependency="hidden"
             android:key="add_movie"
             android:summary="@string/add_movie_summary"
             android:title="@string/add_movie_title" />
         <SwitchPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:dependency="hidden"
             android:key="add_korea"
             android:summary="@string/add_korea_summary"
